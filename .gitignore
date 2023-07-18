@@ -5,6 +5,8 @@
 ### QueryDsl
 /src/main/generated
 
+### JPA Buddy
+.jpb/
 
 
 
