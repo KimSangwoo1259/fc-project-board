@@ -52,7 +52,8 @@ class JpaRepositoryTest {
     @DisplayName("update 테스트")
     void givenTestData_whenUpdating_thenWorkFind(){
         //given
-        articleRepository.save(Article.of("new article", "new content", "#spring"));
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("uno", "pw", null, null, null));
+        articleRepository.save(Article.of(userAccount, "new article", "new content", "#spring"));
         Article article = articleRepository.findById(1L).orElseThrow();
         String updatedHashtag = "#springboot";
         article.setHashtag(updatedHashtag);
@@ -71,9 +72,11 @@ class JpaRepositoryTest {
     @DisplayName("delete 테스트")
     void givenTestData_Deleting_thenWorkFind(){
         //given
-        Article save = articleRepository.save(Article.of("new article", "new content", "#spring"));
-        articleCommentRepository.save(ArticleComment.of(save, "야"));
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("uno", "pw", null, null, null));
+        articleRepository.save(Article.of(userAccount, "new article", "new content", "#spring"));
         Article article = articleRepository.findById(1L).orElseThrow();
+        articleCommentRepository.save(ArticleComment.of(article,userAccount,"abc"));
+
         long previousArticleCount = articleRepository.count();
         long previousArticleCommentCount = articleCommentRepository.count();
         int deletedCommentsSize = article.getArticleComments().size();
