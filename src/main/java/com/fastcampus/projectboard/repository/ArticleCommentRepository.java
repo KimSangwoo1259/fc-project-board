@@ -1,7 +1,6 @@
 package com.fastcampus.projectboard.repository;
 
 import com.fastcampus.projectboard.domain.ArticleComment;
-import com.fastcampus.projectboard.domain.QArticle;
 import com.fastcampus.projectboard.domain.QArticleComment;
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.core.types.dsl.StringExpression;
@@ -17,18 +16,18 @@ import java.util.List;
 public interface ArticleCommentRepository extends
         JpaRepository<ArticleComment, Long>,
         QuerydslPredicateExecutor<ArticleComment>,
-        QuerydslBinderCustomizer<QArticleComment>
-{
+        QuerydslBinderCustomizer<QArticleComment> {
 
     List<ArticleComment> findByArticle_Id(Long articleId);
+    void deleteByIdAndUserAccount_UserId(Long articleCommentId, String userId);
 
     @Override
-    default void customize(QuerydslBindings bindings, QArticleComment root){
-        bindings.excludeUnlistedProperties(true); // 아래 코드에서 지정한 필드를 통해서만 검색할 수 있음
+    default void customize(QuerydslBindings bindings, QArticleComment root) {
+        bindings.excludeUnlistedProperties(true);
         bindings.including(root.content, root.createdAt, root.createdBy);
         bindings.bind(root.content).first(StringExpression::containsIgnoreCase);
         bindings.bind(root.createdAt).first(DateTimeExpression::eq);
-        bindings.bind(root.content).first(StringExpression::containsIgnoreCase);
+        bindings.bind(root.createdBy).first(StringExpression::containsIgnoreCase);
     }
 
 }
