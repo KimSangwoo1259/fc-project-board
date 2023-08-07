@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @ToString
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
-public abstract class AuditingFields {
+@MappedSuperclass // JPA Entity 클래스들이 해당 추상 클래스를 상속할 경우, createDate, modifiedDate를 컬럼으로 인식 / 대신 테이블에서 컬럼은 해당 클래스에 만들어야함
+@EntityListeners(AuditingEntityListener.class) // 해당 클래스에 Auditing 기능을 포함한다는 의미
+public abstract class AuditingFields { // Spring JPA 에서 시간에 대해 자동으로 값을 넣어주는 기능
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
